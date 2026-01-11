@@ -477,7 +477,7 @@
                 <span class="divider">|</span>
                 <span class="right-text">Script Consulting</span>
             </h1>
-            <p class="header-email"><a href="/cdn-cgi/l/email-protection#99eafaebf0e9edead9a8a0a9aaebfcf4f6edfcb7faf6f4"><span class="__cf_email__" data-cfemail="225141504b52565162131b121150474f4d56470c414d4f">[email&#160;protected]</span></a></p>
+            <p class="header-email"><a href="mailto:scripts@1903remote.com">scripts@1903remote.com</a></p>
         </header>
         
         <!-- ============================================
@@ -627,7 +627,7 @@
     <!-- ============================================
          JAVASCRIPT FOR FORM HANDLING
          ============================================ -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
         // Display selected file name
         document.getElementById('file').addEventListener('change', function(e) {
             const fileName = e.target.files.length > 0 
@@ -646,4 +646,24 @@
             const message = formData.get('message');
             const file = formData.get('file');
             
+            // For now, create a mailto link (this will open the user's email client)
+            // Note: File attachments cannot be added via mailto
+            const subject = encodeURIComponent('Script Consulting Inquiry');
+            const body = encodeURIComponent(
+                `Email: ${email}\n\nMessage:\n${message}\n\n` +
+                (file.name ? `File attached: ${file.name}` : 'No file attached')
+            );
             
+            window.location.href = `mailto:scripts@1903remote.com?subject=${subject}&body=${body}`;
+            
+            // Note: For real email functionality with attachments, you'll need:
+            // 1. A backend service (Node.js, PHP, etc.)
+            // 2. Email service (SendGrid, AWS SES, etc.)
+            // 3. Or a form service like Formspree, EmailJS, or Netlify Forms
+            
+            // Alert user
+            alert('Opening your email client... Please attach the file manually if you selected one.');
+        });
+    </script>
+</body>
+</html>
