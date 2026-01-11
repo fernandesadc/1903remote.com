@@ -271,6 +271,17 @@
             gap: 0.5rem;
         }
         
+        .file-upload-row {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+        
+        .file-upload-wrapper {
+            flex: 1;
+            position: relative;
+        }
+        
         .form-group label {
             font-size: var(--font-body-size);
             font-weight: 400;
@@ -297,10 +308,6 @@
         .form-group textarea {
             min-height: 120px;
             resize: vertical;
-        }
-        
-        .file-upload-wrapper {
-            position: relative;
         }
         
         .file-upload-label {
@@ -342,7 +349,6 @@
             color: var(--color-background);
             cursor: pointer;
             transition: all 0.3s ease;
-            align-self: flex-start;
         }
         
         .submit-button:hover {
@@ -445,6 +451,11 @@
                 gap: 3rem;
             }
             
+            .file-upload-row {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
             .testimonials-row-top,
             .testimonials-row-bottom {
                 grid-template-columns: 1fr;
@@ -466,7 +477,7 @@
                 <span class="divider">|</span>
                 <span class="right-text">Script Consulting</span>
             </h1>
-            <p class="header-email"><a href="mailto:scripts@1903remote.com">scripts@1903remote.com</a></p>
+            <p class="header-email"><a href="/cdn-cgi/l/email-protection#99eafaebf0e9edead9a8a0a9aaebfcf4f6edfcb7faf6f4"><span class="__cf_email__" data-cfemail="225141504b52565162131b121150474f4d56470c414d4f">[email&#160;protected]</span></a></p>
         </header>
         
         <!-- ============================================
@@ -546,23 +557,25 @@
                     <!-- File Upload -->
                     <div class="form-group">
                         <label>Attach File (Optional)</label>
-                        <div class="file-upload-wrapper">
-                            <label for="file" class="file-upload-label">
-                                Choose File
-                            </label>
-                            <input 
-                                type="file" 
-                                id="file" 
-                                name="file" 
-                                class="file-upload-input"
-                                accept=".pdf,.doc,.docx"
-                            >
-                            <span class="file-name" id="fileName">No file selected</span>
+                        <div class="file-upload-row">
+                            <div class="file-upload-wrapper">
+                                <label for="file" class="file-upload-label">
+                                    Choose File
+                                </label>
+                                <input 
+                                    type="file" 
+                                    id="file" 
+                                    name="file" 
+                                    class="file-upload-input"
+                                    accept=".pdf,.doc,.docx"
+                                >
+                                <span class="file-name" id="fileName">No file selected</span>
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <button type="submit" class="submit-button">Submit</button>
                         </div>
                     </div>
-                    
-                    <!-- Submit Button -->
-                    <button type="submit" class="submit-button">Submit</button>
                 </form>
             </div>
             
@@ -614,7 +627,7 @@
     <!-- ============================================
          JAVASCRIPT FOR FORM HANDLING
          ============================================ -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Display selected file name
         document.getElementById('file').addEventListener('change', function(e) {
             const fileName = e.target.files.length > 0 
@@ -633,7 +646,4 @@
             const message = formData.get('message');
             const file = formData.get('file');
             
-            // For now, create a mailto link (this will open the user's email client)
-            // Note: File attachments cannot be added via mailto
-            const subject = encodeURIComponent('Script Consulting Inquiry');
-            const body = encodeUR
+            
