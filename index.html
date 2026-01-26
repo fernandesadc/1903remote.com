@@ -346,10 +346,30 @@
         .testimonials-grid {
             max-width: 1000px;
             margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .testimonial-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
             align-items: start;
+        }
+        
+        /* Short testimonials: 4 per row */
+        .testimonial-row.short {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+        
+        /* Medium testimonials: 3 per row */
+        .testimonial-row.medium {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+        
+        /* Long testimonials: 2 per row */
+        .testimonial-row.long {
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
         }
         
         .testimonial {
@@ -415,7 +435,10 @@
                 gap: 3rem;
             }
             
-            .testimonials-grid {
+            /* All testimonial rows become single column on mobile */
+            .testimonial-row.short,
+            .testimonial-row.medium,
+            .testimonial-row.long {
                 grid-template-columns: 1fr;
             }
         }
@@ -574,14 +597,66 @@
             const grid = document.getElementById('testimonialsGrid');
             grid.innerHTML = '';
             
+            // Categorize testimonials by length
+            const short = [];
+            const medium = [];
+            const long = [];
+            
             testimonials.forEach(testimonialText => {
                 if (testimonialText && testimonialText.trim() !== '') {
-                    const testimonialDiv = document.createElement('div');
-                    testimonialDiv.className = 'testimonial';
-                    testimonialDiv.textContent = `"${testimonialText}"`;
-                    grid.appendChild(testimonialDiv);
+                    // Remove any existing quotes from the text
+                    let cleanText = testimonialText.replace(/^["'"]+|["'"]+$/g, '').trim();
+                    const length = cleanText.length;
+                    
+                    if (length < 150) {
+                        short.push(cleanText);
+                    } else if (length < 350) {
+                        medium.push(cleanText);
+                    } else {
+                        long.push(cleanText);
+                    }
                 }
             });
+            
+            // Create rows for each category
+            // Long testimonials first (most impactful)
+            if (long.length > 0) {
+                const longRow = document.createElement('div');
+                longRow.className = 'testimonial-row long';
+                long.forEach(text => {
+                    const testimonialDiv = document.createElement('div');
+                    testimonialDiv.className = 'testimonial';
+                    testimonialDiv.textContent = `"${text}"`;
+                    longRow.appendChild(testimonialDiv);
+                });
+                grid.appendChild(longRow);
+            }
+            
+            // Medium testimonials
+            if (medium.length > 0) {
+                const mediumRow = document.createElement('div');
+                mediumRow.className = 'testimonial-row medium';
+                medium.forEach(text => {
+                    const testimonialDiv = document.createElement('div');
+                    testimonialDiv.className = 'testimonial';
+                    testimonialDiv.textContent = `"${text}"`;
+                    mediumRow.appendChild(testimonialDiv);
+                });
+                grid.appendChild(mediumRow);
+            }
+            
+            // Short testimonials last
+            if (short.length > 0) {
+                const shortRow = document.createElement('div');
+                shortRow.className = 'testimonial-row short';
+                short.forEach(text => {
+                    const testimonialDiv = document.createElement('div');
+                    testimonialDiv.className = 'testimonial';
+                    testimonialDiv.textContent = `"${text}"`;
+                    shortRow.appendChild(testimonialDiv);
+                });
+                grid.appendChild(shortRow);
+            }
         }
         
         // ============================================
