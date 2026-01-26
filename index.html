@@ -282,17 +282,6 @@
             gap: 0.5rem;
         }
         
-        .file-upload-row {
-            display: flex;
-            gap: 1.5rem;
-            align-items: flex-start;
-        }
-        
-        .file-upload-wrapper {
-            flex: 1;
-            position: relative;
-        }
-        
         .form-group label {
             font-size: var(--font-body-size);
             font-weight: 400;
@@ -321,36 +310,6 @@
             resize: vertical;
         }
         
-        .file-upload-label {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            border: 1px solid var(--color-border);
-            background-color: var(--color-background);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: var(--font-body-size);
-        }
-        
-        .file-upload-label:hover {
-            border-color: var(--color-text);
-        }
-        
-        .file-upload-input {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            opacity: 0;
-            overflow: hidden;
-        }
-        
-        .file-name {
-            display: block;
-            margin-top: 0.5rem;
-            font-size: var(--font-body-size);
-            color: var(--color-accent);
-            font-style: italic;
-        }
-        
         .submit-button {
             font-family: var(--font-serif);
             font-size: var(--font-body-size);
@@ -360,6 +319,7 @@
             color: var(--color-background);
             cursor: pointer;
             transition: all 0.3s ease;
+            align-self: flex-start;
         }
         
         .submit-button:hover {
@@ -387,19 +347,9 @@
             max-width: 1000px;
             margin: 0 auto;
             display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
-        }
-        
-        .testimonials-row-top {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-        }
-        
-        .testimonials-row-bottom {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
+            align-items: start;
         }
         
         .testimonial {
@@ -407,6 +357,19 @@
             font-style: italic;
             line-height: 1.7;
             font-size: var(--font-body-size);
+        }
+        
+        /* Loading state */
+        .testimonials-loading {
+            text-align: center;
+            color: var(--color-accent);
+            font-style: italic;
+        }
+        
+        /* Error state */
+        .testimonials-error {
+            text-align: center;
+            color: var(--color-accent);
         }
         
         /* ============================================
@@ -452,15 +415,8 @@
                 gap: 3rem;
             }
             
-            .file-upload-row {
-                flex-direction: column;
-                gap: 1.5rem;
-            }
-            
-            .testimonials-row-top,
-            .testimonials-row-bottom {
+            .testimonials-grid {
                 grid-template-columns: 1fr;
-                max-width: 100%;
             }
         }
     </style>
@@ -561,66 +517,21 @@
                         ></textarea>
                     </div>
                     
-                    <!-- File Upload -->
-                    <div class="form-group">
-                        <label>Attach File (Optional)</label>
-                        <div class="file-upload-row">
-                            <div class="file-upload-wrapper">
-                                <label for="file" class="file-upload-label">
-                                    Choose File
-                                </label>
-                                <input 
-                                    type="file" 
-                                    id="file" 
-                                    name="file" 
-                                    class="file-upload-input"
-                                    accept=".pdf,.doc,.docx"
-                                >
-                                <span class="file-name" id="fileName">No file selected</span>
-                            </div>
-                            
-                            <!-- Submit Button -->
-                            <button type="submit" class="submit-button">Submit</button>
-                        </div>
-                    </div>
+                    <!-- Submit Button -->
+                    <button type="submit" class="submit-button">Submit</button>
                 </form>
             </div>
             
         </section>
         
         <!-- ============================================
-             TESTIMONIALS SECTION
-             Edit: Replace lorem ipsum with real testimonials
+             TESTIMONIALS SECTION (Loaded from Google Sheets)
              ============================================ -->
         <section class="testimonials-section">
             <h2>Testimonials</h2>
             
-            <div class="testimonials-grid">
-                <!-- Top Row: 3 Testimonials -->
-                <div class="testimonials-row-top">
-                    <div class="testimonial">
-                        "Your coverage is always incredibly helpful and illuminating, delivered with clarity and fantastic insight! In scripts where I have understood that there are deep-seated story issues, you have over and over again keenly identified the problems and the specific elements that would fix them. Your suggestions were transformative and allowed me to take the scripts to the place I always wanted them to be!"
-                    </div>
-                    <div class="testimonial">
-                        "This is amazing, it's so thoughtful and thorough thank you so much! You've given me so many ideas to work off and it's really inspired be to go back to this project again!"
-                    </div>
-                    <div class="testimonial">
-                        "English isn't my first language and this is my first time writing a script so I really wanted unbiased and direct advice that doesn't sugar coat anything and you provided that. Thank you for being so blunt and direct, I genuinely found this really helpful advice and I'm excited to use it to better my writing!"
-                    </div>
-                </div>
-                
-                <!-- Bottom Row: 3 Testimonials -->
-                <div class="testimonials-row-bottom">
-                    <div class="testimonial">
-                        "Thank you from the bottom of my heart for your amazing insight. It's everything I could have asked for and more."
-                    </div>
-                    <div class="testimonial">
-                        "I've already found your feedback far more useful than some of the industry-standard readers I paid for."
-                    </div>
-                    <div class="testimonial">
-                        "These are the best, most detailed notes I've ever received."
-                    </div>
-                </div>
+            <div class="testimonials-grid" id="testimonialsGrid">
+                <p class="testimonials-loading">Loading testimonials...</p>
             </div>
         </section>
         
@@ -635,16 +546,92 @@
     </div>
     
     <!-- ============================================
-         JAVASCRIPT FOR FORM HANDLING
+         JAVASCRIPT FOR GOOGLE SHEETS INTEGRATION
          ============================================ -->
     <script>
-        // Display selected file name
-        document.getElementById('file').addEventListener('change', function(e) {
-            const fileName = e.target.files.length > 0 
-                ? e.target.files[0].name 
-                : 'No file selected';
-            document.getElementById('fileName').textContent = fileName;
-        });
+        // ============================================
+        // CONFIGURATION
+        // Replace this with your published Google Sheets URL
+        // The URL should end with /pub?output=csv
+        // Example: https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?output=csv
+        // ============================================
+        const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQSZv8Gi3mfNIBVGPT7Fg7V6lLEfpocJdSgXxxBp8yK1mY5VwoETlJRMswZlG7GeRGtgYtY6uOgA-CT/pub?output=csv';
+        
+        // Fallback testimonials (used if Google Sheets fails to load)
+        const FALLBACK_TESTIMONIALS = [
+            "Your coverage is always incredibly helpful and illuminating, delivered with clarity and fantastic insight! In scripts where I have understood that there are deep-seated story issues, you have over and over again keenly identified the problems and the specific elements that would fix them. Your suggestions were transformative and allowed me to take the scripts to the place I always wanted them to be!",
+            "This is amazing, it's so thoughtful and thorough thank you so much! You've given me so many ideas to work off and it's really inspired be to go back to this project again!",
+            "English isn't my first language and this is my first time writing a script so I really wanted unbiased and direct advice that doesn't sugar coat anything and you provided that. Thank you for being so blunt and direct, I genuinely found this really helpful advice and I'm excited to use it to better my writing!",
+            "Thank you from the bottom of my heart for your amazing insight. It's everything I could have asked for and more.",
+            "I've already found your feedback far more useful than some of the industry-standard readers I paid for.",
+            "These are the best, most detailed notes I've ever received."
+        ];
+        
+        // ============================================
+        // DISPLAY TESTIMONIALS FROM ARRAY
+        // ============================================
+        function displayTestimonials(testimonials) {
+            const grid = document.getElementById('testimonialsGrid');
+            grid.innerHTML = '';
+            
+            testimonials.forEach(testimonialText => {
+                if (testimonialText && testimonialText.trim() !== '') {
+                    const testimonialDiv = document.createElement('div');
+                    testimonialDiv.className = 'testimonial';
+                    testimonialDiv.textContent = `"${testimonialText}"`;
+                    grid.appendChild(testimonialDiv);
+                }
+            });
+        }
+        
+        // ============================================
+        // LOAD TESTIMONIALS FROM GOOGLE SHEETS
+        // ============================================
+        async function loadTestimonials() {
+            const grid = document.getElementById('testimonialsGrid');
+            
+            try {
+                // Fetch data from Google Sheets (CSV format)
+                const response = await fetch(GOOGLE_SHEET_URL);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const csvText = await response.text();
+                
+                // Parse CSV data
+                const lines = csvText.split('\n').filter(line => line.trim() !== '');
+                
+                // Check if we have testimonials (skip header row)
+                if (lines.length > 1) {
+                    // Skip the header row (first line) and create testimonial elements
+                    const testimonials = lines.slice(1).map(line => {
+                        // Remove quotes that CSV adds and clean up the text
+                        return line.replace(/^"/, '').replace(/"$/, '').trim();
+                    }).filter(text => text !== '');
+                    
+                    if (testimonials.length > 0) {
+                        displayTestimonials(testimonials);
+                        console.log('Successfully loaded testimonials from Google Sheets');
+                        return;
+                    }
+                }
+                
+                // If we get here, use fallback
+                throw new Error('No testimonials found in Google Sheet');
+                
+            } catch (error) {
+                console.log('Could not load from Google Sheets, using fallback testimonials');
+                console.log('Error details:', error.message);
+                
+                // Use fallback testimonials
+                displayTestimonials(FALLBACK_TESTIMONIALS);
+            }
+        }
+        
+        // Load testimonials when page loads
+        document.addEventListener('DOMContentLoaded', loadTestimonials);
     </script>
 </body>
 </html>
