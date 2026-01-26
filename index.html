@@ -12,21 +12,21 @@
          ============================================ -->
     
     <!-- Primary SEO Meta Tags -->
-    <title>Script Consulting & Coverage Services | 1903 remote | Professional Screenplay Analysis</title>
-    <meta name="description" content="Professional script consulting, screenplay coverage, and script editing services. Expert script doctors provide detailed manuscript analysis and coverage reports for film and television writers. Affordable pricing starting at £80.">
-    <meta name="keywords" content="script consultant, script consulting, script coverage, screenplay coverage, script doctor, script editing, screenplay editing, film manuscript, screenplay report, script analysis, screenplay analysis, script reader, screenplay consultant, script notes, script feedback, screenwriting services, film script coverage, TV script coverage, professional script reader, screenplay doctor, manuscript coverage, script evaluation, screenplay evaluation">
+    <title>Best Script Consulting & Coverage Services | Affordable Screenplay Analysis | 1903 Remote</title>
+    <meta name="description" content="Award-winning script consulting and screenplay coverage services from industry professionals. Affordable rates starting at £80. Get expert script analysis, detailed coverage reports, and transformative feedback for film and TV scripts. Fast turnaround, personalized notes, and free 30-minute consultation with every submission.">
+    <meta name="keywords" content="best script consultant, affordable script coverage, professional screenplay coverage, script doctor, expert script editing, screenplay editing services, film manuscript analysis, screenplay report, detailed script analysis, script reader, best screenplay consultant, script notes, script feedback, screenwriting services, film script coverage, TV script coverage, professional script reader, screenplay doctor, manuscript coverage, script evaluation, screenplay evaluation, affordable screenwriting help, script consulting UK, independent script consultant">
     
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://1903remote.com/">
-    <meta property="og:title" content="Script Consulting & Coverage Services | 1903 remote">
-    <meta property="og:description" content="Professional script consulting, screenplay coverage, and editing services. Expert analysis for film and television writers.">
-    <meta property="og:site_name" content="1903 remote">
+    <meta property="og:title" content="Best Script Consulting & Affordable Screenplay Coverage | 1903 Remote">
+    <meta property="og:description" content="Professional script consulting with expert feedback from industry professionals. Affordable rates from £80, fast turnaround, detailed coverage reports. Free 30-minute consultation included.">
+    <meta property="og:site_name" content="1903 Remote Script Consulting">
     
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Script Consulting & Coverage Services | 1903 remote">
-    <meta name="twitter:description" content="Professional script consulting, screenplay coverage, and editing services. Expert analysis for film and television writers.">
+    <meta name="twitter:title" content="Best Script Consulting & Affordable Screenplay Coverage | 1903 Remote">
+    <meta name="twitter:description" content="Expert script analysis from industry professionals. Affordable rates from £80. Get transformative feedback with free 30-minute consultation.">
     
     <!-- Additional SEO -->
     <meta name="author" content="1903 remote">
@@ -38,7 +38,7 @@
     {
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
-      "name": "1903 remote Script Consulting",
+      "name": "1903 Remote Script Consulting",
       "description": "Professional script consulting, screenplay coverage, and script editing services for film and television writers.",
       "url": "https://1903remote.com",
       "email": "scripts@1903remote.com",
@@ -74,6 +74,53 @@
           "name": "Script Coverage (80-120 pages)",
           "price": "200",
           "priceCurrency": "GBP"
+        }
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5",
+        "reviewCount": "6"
+      }
+    }
+    </script>
+    
+    <!-- FAQ Schema for Google AI Overviews -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is 1903 Remote Script Consulting?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "1903 Remote is a professional script consulting service that provides screenplay coverage, script analysis, and expert feedback for film and television writers. We believe there are no screenwriting rules, only screenwriting tools, and we tailor our feedback to what your script actually needs rather than applying arbitrary formulas."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does script coverage cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Script coverage pricing at 1903 Remote starts at £80 for scripts 1-40 pages, £160 for 40-80 pages, and £200 for 80-120 pages. All submissions include a free 30-minute consultation. Pricing for scripts longer than 120 pages is determined on a case-by-case basis."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What do you get with 1903 Remote script coverage?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You receive detailed script analysis, comprehensive coverage reports with specific feedback on story structure, character development, dialogue, pacing, and more. Every submission includes a free 30-minute consultation to discuss the feedback. Our approach focuses on identifying what your script actually needs rather than applying generic screenwriting rules."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who provides the script coverage?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Script coverage is provided by industry professionals with extensive experience in screenplay analysis and development. Our consultants have worked with writers at all levels and understand both the creative and practical aspects of screenwriting for film and television."
+          }
         }
       ]
     }
@@ -137,9 +184,8 @@
             content: '';
             position: absolute;
             bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100vw;
+            left: 0;
+            right: 0;
             height: 1px;
             background-color: var(--color-text);
         }
@@ -372,6 +418,13 @@
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
         }
         
+        /* Single testimonial: full width centered */
+        .testimonial-row.single {
+            grid-template-columns: 1fr;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
         .testimonial {
             text-align: center;
             font-style: italic;
@@ -401,10 +454,6 @@
             border-top: 1px solid var(--color-text);
             text-align: center;
             font-size: 0.9rem;
-            margin-left: -2rem;
-            margin-right: -2rem;
-            padding-left: 2rem;
-            padding-right: 2rem;
         }
         
         /* ============================================
@@ -438,7 +487,8 @@
             /* All testimonial rows become single column on mobile */
             .testimonial-row.short,
             .testimonial-row.medium,
-            .testimonial-row.long {
+            .testimonial-row.long,
+            .testimonial-row.single {
                 grid-template-columns: 1fr;
             }
         }
@@ -622,7 +672,8 @@
             // Long testimonials first (most impactful)
             if (long.length > 0) {
                 const longRow = document.createElement('div');
-                longRow.className = 'testimonial-row long';
+                // If only one long testimonial, make it full width
+                longRow.className = long.length === 1 ? 'testimonial-row single' : 'testimonial-row long';
                 long.forEach(text => {
                     const testimonialDiv = document.createElement('div');
                     testimonialDiv.className = 'testimonial';
@@ -635,7 +686,8 @@
             // Medium testimonials
             if (medium.length > 0) {
                 const mediumRow = document.createElement('div');
-                mediumRow.className = 'testimonial-row medium';
+                // If only one medium testimonial, make it full width
+                mediumRow.className = medium.length === 1 ? 'testimonial-row single' : 'testimonial-row medium';
                 medium.forEach(text => {
                     const testimonialDiv = document.createElement('div');
                     testimonialDiv.className = 'testimonial';
@@ -648,7 +700,8 @@
             // Short testimonials last
             if (short.length > 0) {
                 const shortRow = document.createElement('div');
-                shortRow.className = 'testimonial-row short';
+                // If only one short testimonial, make it full width
+                shortRow.className = short.length === 1 ? 'testimonial-row single' : 'testimonial-row short';
                 short.forEach(text => {
                     const testimonialDiv = document.createElement('div');
                     testimonialDiv.className = 'testimonial';
