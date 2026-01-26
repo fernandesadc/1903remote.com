@@ -12,20 +12,20 @@
          ============================================ -->
     
     <!-- Primary SEO Meta Tags -->
-    <title>Best Script Consulting & Coverage Services | Affordable Screenplay Analysis | 1903 Remote</title>
+    <title>1903 Remote | Script Consulting</title>
     <meta name="description" content="Award-winning script consulting and screenplay coverage services from industry professionals. Affordable rates starting at £80. Get expert script analysis, detailed coverage reports, and transformative feedback for film and TV scripts. Fast turnaround, personalized notes, and free 30-minute consultation with every submission.">
     <meta name="keywords" content="best script consultant, affordable script coverage, professional screenplay coverage, script doctor, expert script editing, screenplay editing services, film manuscript analysis, screenplay report, detailed script analysis, script reader, best screenplay consultant, script notes, script feedback, screenwriting services, film script coverage, TV script coverage, professional script reader, screenplay doctor, manuscript coverage, script evaluation, screenplay evaluation, affordable screenwriting help, script consulting UK, independent script consultant">
     
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://1903remote.com/">
-    <meta property="og:title" content="Best Script Consulting & Affordable Screenplay Coverage | 1903 Remote">
+    <meta property="og:title" content="1903 Remote | Script Consulting">
     <meta property="og:description" content="Professional script consulting with expert feedback from industry professionals. Affordable rates from £80, fast turnaround, detailed coverage reports. Free 30-minute consultation included.">
     <meta property="og:site_name" content="1903 Remote Script Consulting">
     
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Best Script Consulting & Affordable Screenplay Coverage | 1903 Remote">
+    <meta name="twitter:title" content="1903 Remote | Script Consulting">
     <meta name="twitter:description" content="Expert script analysis from industry professionals. Affordable rates from £80. Get transformative feedback with free 30-minute consultation.">
     
     <!-- Additional SEO -->
@@ -403,25 +403,20 @@
             align-items: start;
         }
         
-        /* Short testimonials: 4 per row */
-        .testimonial-row.short {
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        /* 2 columns for long testimonials */
+        .testimonial-row.two-col {
+            grid-template-columns: repeat(2, 1fr);
         }
         
-        /* Medium testimonials: 3 per row */
-        .testimonial-row.medium {
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        /* 3 columns for short/medium testimonials */
+        .testimonial-row.three-col {
+            grid-template-columns: repeat(3, 1fr);
         }
         
-        /* Long testimonials: 2 per row */
-        .testimonial-row.long {
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        }
-        
-        /* Single testimonial: full width centered */
+        /* Single testimonial: centered, max width */
         .testimonial-row.single {
             grid-template-columns: 1fr;
-            max-width: 700px;
+            max-width: 650px;
             margin: 0 auto;
         }
         
@@ -485,9 +480,8 @@
             }
             
             /* All testimonial rows become single column on mobile */
-            .testimonial-row.short,
-            .testimonial-row.medium,
-            .testimonial-row.long,
+            .testimonial-row.two-col,
+            .testimonial-row.three-col,
             .testimonial-row.single {
                 grid-template-columns: 1fr;
             }
@@ -649,7 +643,6 @@
             
             // Categorize testimonials by length
             const short = [];
-            const medium = [];
             const long = [];
             
             testimonials.forEach(testimonialText => {
@@ -658,57 +651,137 @@
                     let cleanText = testimonialText.replace(/^["'"]+|["'"]+$/g, '').trim();
                     const length = cleanText.length;
                     
-                    if (length < 150) {
-                        short.push(cleanText);
-                    } else if (length < 350) {
-                        medium.push(cleanText);
-                    } else {
+                    // Simple binary: long vs short/medium
+                    if (length > 300) {
                         long.push(cleanText);
+                    } else {
+                        short.push(cleanText);
                     }
                 }
             });
             
-            // Create rows for each category
-            // Long testimonials first (most impactful)
+            // Helper function to create rows
+            function createRows(items, itemsPerRow) {
+                const rows = [];
+                for (let i = 0; i < items.length; i += itemsPerRow) {
+                    rows.push(items.slice(i, i + itemsPerRow));
+                }
+                return rows;
+            }
+            
+            // Process LONG testimonials (2 per row)
             if (long.length > 0) {
-                const longRow = document.createElement('div');
-                // If only one long testimonial, make it full width
-                longRow.className = long.length === 1 ? 'testimonial-row single' : 'testimonial-row long';
-                long.forEach(text => {
+                if (long.length % 2 === 0) {
+                    // Even number: create rows of 2
+                    const rows = createRows(long, 2);
+                    rows.forEach(rowItems => {
+                        const row = document.createElement('div');
+                        row.className = 'testimonial-row two-col';
+                        rowItems.forEach(text => {
+                            const testimonialDiv = document.createElement('div');
+                            testimonialDiv.className = 'testimonial';
+                            testimonialDiv.textContent = `"${text}"`;
+                            row.appendChild(testimonialDiv);
+                        });
+                        grid.appendChild(row);
+                    });
+                } else {
+                    // Odd number: all pairs in 2-col rows, last one centered
+                    const pairs = Math.floor(long.length / 2);
+                    
+                    // Create 2-column rows for pairs
+                    for (let i = 0; i < pairs * 2; i += 2) {
+                        const row = document.createElement('div');
+                        row.className = 'testimonial-row two-col';
+                        [long[i], long[i + 1]].forEach(text => {
+                            const testimonialDiv = document.createElement('div');
+                            testimonialDiv.className = 'testimonial';
+                            testimonialDiv.textContent = `"${text}"`;
+                            row.appendChild(testimonialDiv);
+                        });
+                        grid.appendChild(row);
+                    }
+                    
+                    // Last one gets centered
+                    const singleRow = document.createElement('div');
+                    singleRow.className = 'testimonial-row single';
                     const testimonialDiv = document.createElement('div');
                     testimonialDiv.className = 'testimonial';
-                    testimonialDiv.textContent = `"${text}"`;
-                    longRow.appendChild(testimonialDiv);
-                });
-                grid.appendChild(longRow);
+                    testimonialDiv.textContent = `"${long[long.length - 1]}"`;
+                    singleRow.appendChild(testimonialDiv);
+                    grid.appendChild(singleRow);
+                }
             }
             
-            // Medium testimonials
-            if (medium.length > 0) {
-                const mediumRow = document.createElement('div');
-                // If only one medium testimonial, make it full width
-                mediumRow.className = medium.length === 1 ? 'testimonial-row single' : 'testimonial-row medium';
-                medium.forEach(text => {
-                    const testimonialDiv = document.createElement('div');
-                    testimonialDiv.className = 'testimonial';
-                    testimonialDiv.textContent = `"${text}"`;
-                    mediumRow.appendChild(testimonialDiv);
-                });
-                grid.appendChild(mediumRow);
-            }
-            
-            // Short testimonials last
+            // Process SHORT/MEDIUM testimonials (3 per row)
             if (short.length > 0) {
-                const shortRow = document.createElement('div');
-                // If only one short testimonial, make it full width
-                shortRow.className = short.length === 1 ? 'testimonial-row single' : 'testimonial-row short';
-                short.forEach(text => {
+                if (short.length % 3 === 0) {
+                    // Divisible by 3: perfect rows of 3
+                    const rows = createRows(short, 3);
+                    rows.forEach(rowItems => {
+                        const row = document.createElement('div');
+                        row.className = 'testimonial-row three-col';
+                        rowItems.forEach(text => {
+                            const testimonialDiv = document.createElement('div');
+                            testimonialDiv.className = 'testimonial';
+                            testimonialDiv.textContent = `"${text}"`;
+                            row.appendChild(testimonialDiv);
+                        });
+                        grid.appendChild(row);
+                    });
+                } else if (short.length % 3 === 1) {
+                    // Remainder of 1: all complete rows of 3, last one centered
+                    const completeRows = Math.floor(short.length / 3);
+                    
+                    // Create 3-column rows
+                    for (let i = 0; i < completeRows * 3; i += 3) {
+                        const row = document.createElement('div');
+                        row.className = 'testimonial-row three-col';
+                        [short[i], short[i + 1], short[i + 2]].forEach(text => {
+                            const testimonialDiv = document.createElement('div');
+                            testimonialDiv.className = 'testimonial';
+                            testimonialDiv.textContent = `"${text}"`;
+                            row.appendChild(testimonialDiv);
+                        });
+                        grid.appendChild(row);
+                    }
+                    
+                    // Last one centered
+                    const singleRow = document.createElement('div');
+                    singleRow.className = 'testimonial-row single';
                     const testimonialDiv = document.createElement('div');
                     testimonialDiv.className = 'testimonial';
-                    testimonialDiv.textContent = `"${text}"`;
-                    shortRow.appendChild(testimonialDiv);
-                });
-                grid.appendChild(shortRow);
+                    testimonialDiv.textContent = `"${short[short.length - 1]}"`;
+                    singleRow.appendChild(testimonialDiv);
+                    grid.appendChild(singleRow);
+                } else {
+                    // Remainder of 2: all complete rows of 3, last 2 in 2-column row
+                    const completeRows = Math.floor(short.length / 3);
+                    
+                    // Create 3-column rows
+                    for (let i = 0; i < completeRows * 3; i += 3) {
+                        const row = document.createElement('div');
+                        row.className = 'testimonial-row three-col';
+                        [short[i], short[i + 1], short[i + 2]].forEach(text => {
+                            const testimonialDiv = document.createElement('div');
+                            testimonialDiv.className = 'testimonial';
+                            testimonialDiv.textContent = `"${text}"`;
+                            row.appendChild(testimonialDiv);
+                        });
+                        grid.appendChild(row);
+                    }
+                    
+                    // Last 2 in a 2-column row
+                    const lastRow = document.createElement('div');
+                    lastRow.className = 'testimonial-row two-col';
+                    [short[short.length - 2], short[short.length - 1]].forEach(text => {
+                        const testimonialDiv = document.createElement('div');
+                        testimonialDiv.className = 'testimonial';
+                        testimonialDiv.textContent = `"${text}"`;
+                        lastRow.appendChild(testimonialDiv);
+                    });
+                    grid.appendChild(lastRow);
+                }
             }
         }
         
